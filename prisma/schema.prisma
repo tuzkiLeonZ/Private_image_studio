@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Generation {
+  id                   String   @id @default(cuid())
+  providerGenerationId String?
+  model                String
+  prompt               String
+  aspectRatio          String
+  imageSize            String?
+  quality              String?
+  optimizeChineseText  Boolean  @default(false)
+  status               String
+  error                String?
+  requestJson          Json?
+  responseJson         Json?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  images     GeneratedImage[]
+  references ReferenceImage[]
+}
+
+model GeneratedImage {
+  id           String   @id @default(cuid())
+  generationId String
+  filename     String
+  localPath    String
+  publicUrl    String
+  sourceUrl    String?
+  mimeType     String?
+  createdAt    DateTime @default(now())
+
+  generation Generation @relation(fields: [generationId], references: [id], onDelete: Cascade)
+}
+
+model ReferenceImage {
+  id           String   @id @default(cuid())
+  generationId String?
+  filename     String
+  localPath    String
+  publicUrl    String
+  mimeType     String
+  createdAt    DateTime @default(now())
+
+  generation Generation? @relation(fields: [generationId], references: [id], onDelete: SetNull)
+}
