@@ -44,7 +44,7 @@ copy .env.local.example .env.local
 然后在 `.env.local` 里填入：
 
 ```env
-VISIONARY_API_BASE_URL="https://visionary.beer"
+VISIONARY_API_BASE_URL="你的 Base Url"
 VISIONARY_API_KEY="你的 API Key"
 ```
 
